@@ -18,6 +18,15 @@ Our group was intrigued by the emerging technologies that have developed in rega
 
 https://drive.google.com/file/d/1GwoASAbS00HHuEyZ_hoaXI5bl1ZWzVZg/view?usp=sharing
 
+## Hardware Description:
+
+This is what our finished build looks like:
+
+
+Here is the hardware pinout for our device:
+
+![Hardware](https://github.com/coltonmack/4180-Room-Security-System/blob/master/hardware.jpg)
+
 ## Software Description:
 
 ### Webpage:
@@ -278,12 +287,6 @@ checkMicrophone()
 	});
 ```
 After adding this functionality, the tasks completed significantly faster making the webpage much more responsive. Lastly, we added some fun features, including sounding the alarm and taking a photo whenever noise or motion was detected. Our home security system is functional!
-
-## Hardware Description:
-
-Here is the hardware pinout for our device:
-
-![Hardware](https://github.com/coltonmack/4180-Room-Security-System/blob/master/hardware.jpg)
 
 ## Conclusion:
 
