@@ -144,7 +144,28 @@ void sonarEcho(int gpio, int level, uint32_t tick)
 To make this work with the webpage, we created another php file that would be called with a different AJAX request that we included in our polling subroutine. So, every 2 seconds, a request would be made to that AJAX file, the shell command would run our C code, and the output would be returned to the javascript where the DOM was updated accordingly. 
 
 ### Speaker:
-After the ultrasonic sensor came the speaker. The speaker takes in a PWM signal, with the frequency determining its pitch and the duty cycle determining its loudness. Using one of the PWM pins on the Pi and the pigpio library, we were able to create another C program that set the PWM frequency and duty cycle accordingly and sounded the speaker (alarm) when called. Just as before, we compiled the C code and placed in our project. We then added another PHP file to be called via an AJAX request that would run the program with a shell call. 
+After the ultrasonic sensor came the speaker. The speaker takes in a PWM signal, with the frequency determining its pitch and the duty cycle determining its loudness. Using one of the PWM pins on the Pi and the pigpio library, we were able to create another C program that set the PWM frequency and duty cycle accordingly and sounded the speaker (alarm) when called. 
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <pigpio.h>
+
+#define SPEAKEROUT 18
+
+int main(int argc, char *argv[])
+{
+	if (gpioInitialise()<0) return 1;
+	
+	gpioSetPWMfrequency(SPEAKEROUT, 500);
+	gpioPWM(18, 128);
+	
+	sleep(1);
+	gpioTerminate();
+	
+	return 0;
+}
+```
+Just as before, we compiled the C code and placed in our project. We then added another PHP file to be called via an AJAX request that would run the program with a shell call. 
 
 ### Microphone:
 Lastly, we added the microphone. However, since the Raspberry Pi does not do native analog input, we needed to use the Mbed to act as an ADC (we didn't have any ADC chips on hand). So, we used the Mbed to read from the speaker, and if noise was detected, would drive an output pin high. The Raspberry Pi would then read from this pin (using gpioRead from the pigpio library), and if the pin was high, the Pi would know that noise was detected. After adding a pulldown resistor, we were able to make this work, and our code could now detect sound. Just as before, this compiled C program was added to our server and called from a PHP file via an AJAX request.
