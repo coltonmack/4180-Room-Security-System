@@ -12,7 +12,7 @@ Our group was intrigued by the emerging technologies that have developed in rega
 
 ## Video Demo:
 
-https://www.youtube.com/watch?v=3MUbILLNlCg
+[![Watch the video](https://img.youtube.com/vi/3MUbILLNlCg/maxresdefault.jpg)](https://www.youtube.com/watch?v=3MUbILLNlCg)
 
 ## Project Description:
 
