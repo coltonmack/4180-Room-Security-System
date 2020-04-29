@@ -24,7 +24,43 @@ After getting our webpage up, it was time to get the different I/O devices inter
 ```
 raspistill -n -w 640 -h 480 -t 1000 -o /var/www/html/img/image0.jpg
 ```
-The complicated part came when it was time to actually interact with the raspistill command from the webpage. This meant clicking a button on the webpage to take a photo and then updating the webpage to display this photo. After some research, I decided the way to do this would be with AJAX requests to different PHP files. AJAX allows for the webpage to asynchronously make requests and update the DOM without having to refresh the entire webpage. PHP was used becauses 1) it can handle our AJAX requests and 2) it is able to make shell calls. For the camera, the PHP file called raspistill. So, clicking a button made an AJAX request to a PHP file that would use the camera to take a new picture (along with updating some text files). I was the able to make another function the polled every so often (we decided on 2 seconds). This function would check a text file, and if it had been updated, would load the new image on the webpage. Great! We are able to control the camera from our webpage.
+The complicated part came when it was time to actually interact with the raspistill command from the webpage. This meant clicking a button on the webpage to take a photo and then updating the webpage to display this photo. After some research, I decided the way to do this would be with AJAX requests to different PHP files. AJAX allows for the webpage to asynchronously make requests and update the DOM without having to refresh the entire webpage. This is what our AJAX request to take a photo looked like.
+```
+function updateWebcam(){
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function(){
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		}
+	}
+	//Take a still image
+	xmlhttp.open("GET","updateWebcam.php?_=" + new Date().getTime(), true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send();
+}
+```
+PHP was used becauses 1) it can handle our AJAX requests and 2) it is able to make shell calls. For the camera, the PHP file called raspistill. So, clicking a button made an AJAX request to a PHP file that would use the camera to take a new picture (along with updating some text files). 
+```
+<?php
+//retrieve last image number
+$img_number = (int) file_get_contents('./img_number.txt', true);
+
+//increment it
+$img_number += 1;
+
+//write new image number
+file_put_contents('./img_number.txt', $img_number);
+
+//take still image with PiCamera and store it in '/var/www/img' directory
+shell_exec("raspistill -n -w 640 -h 480 -t 1000 -o /var/www/html/img/image".$img_number.".jpg");
+
+//save new image name
+$img_name = './img/image'.$img_number.'.jpg';
+
+//update ajax_info with most recent image name
+file_put_contents('./ajax_info.txt', $img_name);
+?>
+```
+I was the able to make another function the polled every so often (we decided on 2 seconds). This function would check a text file, and if it had been updated, would load the new image on the webpage. Great! We are able to control the camera from our webpage.
 
 ### Ultrasonic Sensor:
 The next I/O device we tackled was the ultrasonic sensor. This ultrasonic sensor uses pulses to determine how far away an object is in front of it. To use the ultrasonic on the Pi, we needed to write (and find some help online) code that would properly control these pulses to get accurate outputs. Our code to control the ultrasonic sensor was written in C, and it made use of the pigpio C library, with the functions gpioSetAlertFunc and gpioSetTimerFunc. After enough trial and error, we were able to get accurate outputs and use these to determine if an object came into range of the sensor. To make this work with the webpage, we created another php file that would be called with a different AJAX request that we included in our polling subroutine. So, every 2 seconds, a request would be made to that AJAX file, the shell command would run our C code, and the output would be returned to the javascript where the DOM was updated accordingly. 
