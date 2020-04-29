@@ -279,5 +279,5 @@ After adding this functionality, the tasks completed significantly faster making
 
 Here is the hardware pinout for our device:
 
-![Hardware Image]
+![Image of Hardware]
 (https://github.com/coltonmack/4180-Room-Security-System/blob/master/hardware.jpg)
