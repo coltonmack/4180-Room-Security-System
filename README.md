@@ -22,6 +22,7 @@ https://drive.google.com/file/d/1GwoASAbS00HHuEyZ_hoaXI5bl1ZWzVZg/view?usp=shari
 
 This is what our finished build looks like:
 
+![Build](https://github.com/coltonmack/4180-Room-Security-System/blob/master/Build.png)
 
 Here is the hardware pinout for our device:
 
