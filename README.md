@@ -14,6 +14,10 @@ Our group was intrigued by the emerging technologies that have developed in rega
 
 [![Watch the video](https://img.youtube.com/vi/3MUbILLNlCg/maxresdefault.jpg)](https://www.youtube.com/watch?v=3MUbILLNlCg)
 
+## Powerpoint Presentation:
+
+https://drive.google.com/file/d/1GwoASAbS00HHuEyZ_hoaXI5bl1ZWzVZg/view?usp=sharing
+
 ## Software Description:
 
 ### Webpage:
