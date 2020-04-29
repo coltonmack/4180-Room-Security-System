@@ -63,7 +63,85 @@ file_put_contents('./ajax_info.txt', $img_name);
 I was the able to make another function the polled every so often (we decided on 2 seconds). This function would check a text file, and if it had been updated, would load the new image on the webpage. Great! We are able to control the camera from our webpage.
 
 ### Ultrasonic Sensor:
-The next I/O device we tackled was the ultrasonic sensor. This ultrasonic sensor uses pulses to determine how far away an object is in front of it. To use the ultrasonic on the Pi, we needed to write (and find some help online) code that would properly control these pulses to get accurate outputs. Our code to control the ultrasonic sensor was written in C, and it made use of the pigpio C library, with the functions gpioSetAlertFunc and gpioSetTimerFunc. After enough trial and error, we were able to get accurate outputs and use these to determine if an object came into range of the sensor. To make this work with the webpage, we created another php file that would be called with a different AJAX request that we included in our polling subroutine. So, every 2 seconds, a request would be made to that AJAX file, the shell command would run our C code, and the output would be returned to the javascript where the DOM was updated accordingly. 
+The next I/O device we tackled was the ultrasonic sensor. This ultrasonic sensor uses pulses to determine how far away an object is in front of it. To use the ultrasonic on the Pi, we needed to write (and find some help online) code that would properly control these pulses to get accurate outputs. Our code to control the ultrasonic sensor was written in C, and it made use of the pigpio C library, with the functions gpioSetAlertFunc and gpioSetTimerFunc. After enough trial and error, we were able to get accurate outputs and use these to determine if an object came into range of the sensor. 
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <pigpio.h>
+
+#define TRIG 17
+#define ECHO 4
+
+void sonarTrigger(void);
+void sonarEcho(int gpio, int level, uint32_t tick);
+
+int values[5] = {0};
+int i = 0;
+int validCount = 0;
+
+int main(int argc, char *argv[])
+{
+   if (gpioInitialise()<0) return 1;
+
+   gpioSetMode(TRIG, PI_OUTPUT);
+   gpioWrite(TRIG, PI_OFF);
+   gpioSetMode(ECHO,PI_INPUT);
+
+   /* update sonar 20 times a second, timer #0 */
+   gpioSetTimerFunc(0, 50, sonarTrigger);
+
+   /* monitor sonar echos */
+   gpioSetAlertFunc(ECHO, sonarEcho);
+
+   usleep(250000);
+   gpioTerminate();
+
+   for (int j = 0; j < 5; ++j) {
+	   if (values[j] > 0 && values[j] < 150) {
+		   validCount += 1;
+	   } 
+   }
+   
+   if (validCount >= 2) {
+	printf("1\n");
+   } else {
+   	printf("0\n");
+   }
+   return 0;
+}
+
+void sonarTrigger(void)
+{
+   /* trigger a sonar reading */
+
+   gpioWrite(TRIG, PI_ON);
+   gpioDelay(10); /* 10us trigger pulse */
+   gpioWrite(TRIG, PI_OFF);
+}
+
+void sonarEcho(int gpio, int level, uint32_t tick)
+{
+  
+   static uint32_t startTick, firstTick=0;
+
+   int diffTick;
+   int output;
+   if (!firstTick) firstTick = tick;
+
+   if (level == PI_ON)
+   {
+      startTick = tick;
+   }
+   else if (level == PI_OFF)
+   {
+      diffTick = tick - startTick; 
+	  output = diffTick / 58;
+      values[i] = output;
+      i += 1;
+   }
+}
+```
+To make this work with the webpage, we created another php file that would be called with a different AJAX request that we included in our polling subroutine. So, every 2 seconds, a request would be made to that AJAX file, the shell command would run our C code, and the output would be returned to the javascript where the DOM was updated accordingly. 
 
 ### Speaker:
 After the ultrasonic sensor came the speaker. The speaker takes in a PWM signal, with the frequency determining its pitch and the duty cycle determining its loudness. Using one of the PWM pins on the Pi and the pigpio library, we were able to create another C program that set the PWM frequency and duty cycle accordingly and sounded the speaker (alarm) when called. Just as before, we compiled the C code and placed in our project. We then added another PHP file to be called via an AJAX request that would run the program with a shell call. 
