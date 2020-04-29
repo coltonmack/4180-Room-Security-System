@@ -252,6 +252,8 @@ int main(int argc, char *argv[])
 ```
 After adding a pulldown resistor, we were able to make this work, and our code could now detect sound. Just as before, this compiled C program was added to our server and called from a PHP file via an AJAX request.
 
+### Putting it together:
+
 The last portion was tying all these parts together. The main problem was that we were checking the speaker and ultrasonic sesnor every loop (2 seconds), and these requests were coming back blank (they weren't finishing in time). To circumvent this, we made use of the Promises API. Promises allow us to better manage asynchronous operations (in this case our AJAX requests), and by chaining the ultrasonic and microphone calls via promises we were able to speed up their execution. 
 ```
 checkMicrophone()
