@@ -22,15 +22,17 @@ https://drive.google.com/file/d/1GwoASAbS00HHuEyZ_hoaXI5bl1ZWzVZg/view?usp=shari
 
 This is what our finished build looks like:
 
-![Build](https://github.com/coltonmack/4180-Room-Security-System/blob/master/Build.png)
+![Build](https://github.com/coltonmack/4180-Room-Security-System/blob/master/images/Build.png)
 
 Here is the hardware pinout for our device:
 
-![Hardware](https://github.com/coltonmack/4180-Room-Security-System/blob/master/hardware.jpg)
+![Hardware](https://github.com/coltonmack/4180-Room-Security-System/blob/master/images/hardware.jpg)
 
-### Parts List:
+## Parts List:
 
+### Raspberry Pi Model B3+
 
+![Pi](https://github.com/coltonmack/4180-Room-Security-System/blob/master/images/Raspberry_Pi.png)
 
 ## Software Description:
 
