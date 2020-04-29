@@ -10,7 +10,7 @@ Jonathan Wang
 
 Our group was intrigued by the emerging technologies that have developed in regards to home security (Ring Doorbell, etc.). We wanted to create our own model of one of these systems using a Raspberry Pi. Our model would be used for room security. The idea was to make use of the Raspberry Pi camera functionality along with other I/O devices to create this security system. 
 
-##Video Demo:
+## Video Demo:
 
 https://www.youtube.com/watch?v=3MUbILLNlCg
 
