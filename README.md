@@ -28,6 +28,10 @@ Here is the hardware pinout for our device:
 
 ![Hardware](https://github.com/coltonmack/4180-Room-Security-System/blob/master/hardware.jpg)
 
+### Parts List:
+
+
+
 ## Software Description:
 
 ### Webpage:
