@@ -14,7 +14,7 @@ Our group was intrigued by the emerging technologies that have developed in rega
 
 [![Watch the video](https://img.youtube.com/vi/3MUbILLNlCg/maxresdefault.jpg)](https://www.youtube.com/watch?v=3MUbILLNlCg)
 
-## Project Description:
+## Software Description:
 
 ### Webpage:
 We started this project with the Raspberry Pi as we had already had the camera module and knew we could go from there. We also knew that we could make use of Linux on the Pi to host an Apache Web Server where our project would be accessible from other devices on the LAN (and even globally in the future). We started by installing Apache and setting up the front end for our application. This was done using standard html, css, and javascript. We added some HTML DOM placeholders that would interact with the different I/O devices we would eventually connect.
@@ -274,3 +274,10 @@ checkMicrophone()
 	});
 ```
 After adding this functionality, the tasks completed significantly faster making the webpage much more responsive. Lastly, we added some fun features, including sounding the alarm and taking a photo whenever noise or motion was detected. Our home security system is functional!
+
+## Hardware Description:
+
+Here is the hardware pinout for our device:
+
+![Hardware Image]
+(https://github.com/coltonmack/4180-Room-Security-System/blob/master/hardware.jpg)
