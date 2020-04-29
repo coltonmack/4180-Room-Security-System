@@ -1,0 +1,52 @@
+body {
+	background-color: #FFDF00;
+}
+
+.buttonWrapper {
+	display: flex;
+	margin: auto;
+	width: 600px;
+}
+
+.buttons {
+  flex: 1;
+  background-color: #4CAF50; /* Green */
+  border: 3px solid black;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+}
+
+.buttons:hover {
+	background-color: orange;
+}
+
+#intruderButton {
+	margin-right: 80px;
+}
+
+#DistanceSpeakerWrapper {
+	display: flex;
+	margin: auto;
+	width: 600px;
+}
+
+.flex-child {
+  flex: 1;
+  background-color: #174cd1; 
+  border: 3px solid black;
+  color: white;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 26px;
+}
+
+#DistanceDiv{
+	margin-right: 80px;
+}
