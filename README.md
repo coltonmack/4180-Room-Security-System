@@ -168,6 +168,107 @@ int main(int argc, char *argv[])
 Just as before, we compiled the C code and placed in our project. We then added another PHP file to be called via an AJAX request that would run the program with a shell call. 
 
 ### Microphone:
-Lastly, we added the microphone. However, since the Raspberry Pi does not do native analog input, we needed to use the Mbed to act as an ADC (we didn't have any ADC chips on hand). So, we used the Mbed to read from the speaker, and if noise was detected, would drive an output pin high. The Raspberry Pi would then read from this pin (using gpioRead from the pigpio library), and if the pin was high, the Pi would know that noise was detected. After adding a pulldown resistor, we were able to make this work, and our code could now detect sound. Just as before, this compiled C program was added to our server and called from a PHP file via an AJAX request.
+Lastly, we added the microphone. However, since the Raspberry Pi does not do native analog input, we needed to use the Mbed to act as an ADC (we didn't have any ADC chips on hand). So, we used the Mbed to read from the speaker, and if noise was detected, would drive an output pin high. 
+```
+#include "mbed.h"
+//Adafruit MEMs SPW2430 microphone demo
+//BusOut myleds(LED1,LED2,LED3,LED4);
+ DigitalOut myled(LED1);    //p14
+ DigitalOut outpin(p14);
+class microphone
+{
+public :
+    microphone(PinName pin);
+    float read();
+    operator float ();
+private :
+    AnalogIn _pin;
+};
+microphone::microphone (PinName pin):
+    _pin(pin)
+{
+}
+float microphone::read()
+{
+    return _pin.read();
+}
+inline microphone::operator float ()
+{
+    return _pin.read();
+}
+ 
+microphone mymicrophone(p16);
+ 
+int main()
+{
+    while(1) {
+//read in, subtract 0.67 DC bias, take absolute value, and scale up .1Vpp to 15 for builtin LED display
+    if(int(abs((mymicrophone - (0.67/3.3)))*500.0) > 13){
+        myled = 1;
+        outpin = 1;
+        wait(5);
+    }
+        
+//Use an 8kHz audio sample rate (phone quality audio);
+        wait(1.0/8000.0);
+        myled = 0;
+        outpin = 0;
+    }
+}
+```
+The Raspberry Pi would then read from this pin (using gpioRead from the pigpio library), and if the pin was high, the Pi would know that noise was detected. 
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <pigpio.h>
 
-The last portion was tying all these parts together. The main problem was that we were checking the speaker and ultrasonic sesnor every loop (2 seconds), and these requests were coming back blank (the weren't finishing in time). To circumvent this, we made use of the Promises API. Promises are asynchronous, allowing the code to happen in the background without clogging up the main event thread. After adding the Promise functionality, we were able to complete these tasks much quicker making the webpage much more responsive. Lastly, we added some fun features, including sounding the alarm and taking a photo whenever noise or motion was detected. Our home security system is functional!
+#define MICIN 3
+
+int values[5]={0};
+int i = 0;
+int validCount = 0;
+
+int main(int argc, char *argv[])
+{
+	if (gpioInitialise()<0) return 1;
+	
+	gpioSetMode(MICIN, PI_INPUT);
+	
+	for (int j = 0; j < 5; ++j) {
+	   if (gpioRead(MICIN) == 1) {
+		   validCount += 1;
+	   } 
+	   usleep(10000);
+    }
+    
+    if (validCount >= 2) {
+		printf("%d\n", 1);
+	} else {
+		printf("%d\n", 0);
+	}
+	
+	return 0;
+}
+```
+After adding a pulldown resistor, we were able to make this work, and our code could now detect sound. Just as before, this compiled C program was added to our server and called from a PHP file via an AJAX request.
+
+The last portion was tying all these parts together. The main problem was that we were checking the speaker and ultrasonic sesnor every loop (2 seconds), and these requests were coming back blank (they weren't finishing in time). To circumvent this, we made use of the Promises API. Promises allow us to better manage asynchronous operations (in this case our AJAX requests), and by chaining the ultrasonic and microphone calls via promises we were able to speed up their execution. 
+```
+checkMicrophone()
+	.then(function (result) {
+		console.log(result);
+		if (result == "Sound detected")
+		count += 1;
+		checkSensor()
+			.then(function (result) {
+			console.log(result);
+			if (result == "Object detected")
+			count += 1;
+			if (count > 0) {
+				updateWebcam();
+				soundAlarm();			
+			}
+		});
+	});
+```
+After adding this functionality, the tasks completed significantly faster making the webpage much more responsive. Lastly, we added some fun features, including sounding the alarm and taking a photo whenever noise or motion was detected. Our home security system is functional!
