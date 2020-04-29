@@ -63,7 +63,7 @@ file_put_contents('./ajax_info.txt', $img_name);
 I was the able to make another function the polled every so often (we decided on 2 seconds). This function would check a text file, and if it had been updated, would load the new image on the webpage. Great! We are able to control the camera from our webpage.
 
 ### Ultrasonic Sensor:
-The next I/O device we tackled was the ultrasonic sensor. This ultrasonic sensor uses pulses to determine how far away an object is in front of it. To use the ultrasonic on the Pi, we needed to write (and find some help online) code that would properly control these pulses to get accurate outputs. Our code to control the ultrasonic sensor was written in C, and it made use of the pigpio C library, with the functions gpioSetAlertFunc and gpioSetTimerFunc. After enough trial and error, we were able to get accurate outputs and use these to determine if an object came into range of the sensor. 
+The next I/O device we tackled was the ultrasonic sensor. This ultrasonic sensor uses pulses to determine how far away an object is in front of it. To use the ultrasonic on the Pi, we needed to write (and find some help online) code that would properly control these pulses to get accurate reads. Our code to control the ultrasonic sensor was written in C, and it made use of the pigpio C library, with the functions gpioSetAlertFunc and gpioSetTimerFunc. After enough trial and error, we were able to get accurate outputs and use these to determine if an object came into range of the sensor. 
 ```
 #include <stdio.h>
 #include <stdlib.h>
@@ -280,3 +280,7 @@ After adding this functionality, the tasks completed significantly faster making
 Here is the hardware pinout for our device:
 
 ![Hardware](https://github.com/coltonmack/4180-Room-Security-System/blob/master/hardware.jpg)
+
+## Conclusion:
+
+Overall we are satisfied with the outcome of our project. We were able to do all the I/O we wanted while keeping the webpage pretty responsive. Some things we would have liked to do include using ngrok or some other software to make our server accessible on the web and adding login functionality. The next generational of room security is right around the corner. 
