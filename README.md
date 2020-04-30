@@ -26,7 +26,7 @@ Our group was intrigued by the emerging technologies that have developed in rega
 
 ### Hardware Pinout:
 
-![Hardware](https://github.com/coltonmack/4180-Room-Security-System/blob/master/images/hardware.jpg)
+![Hardware](https://github.com/coltonmack/4180-Room-Security-System/blob/master/images/Pinout.png)
 
 ## Parts List:
 
