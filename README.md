@@ -3,7 +3,7 @@
 
 ## Team Members:
 
-Colton Mack
+Colton Mack,
 Jonathan Wang
 
 ## Introduction:
@@ -20,11 +20,11 @@ https://drive.google.com/file/d/1GwoASAbS00HHuEyZ_hoaXI5bl1ZWzVZg/view?usp=shari
 
 ## Hardware Description:
 
-This is what our finished build looks like:
+### Finished Build:
 
 ![Build](https://github.com/coltonmack/4180-Room-Security-System/blob/master/images/Build.png)
 
-Here is the hardware pinout for our device:
+### Hardware Pinout:
 
 ![Hardware](https://github.com/coltonmack/4180-Room-Security-System/blob/master/images/hardware.jpg)
 
@@ -33,6 +33,30 @@ Here is the hardware pinout for our device:
 ### Raspberry Pi Model B3+
 
 ![Pi](https://github.com/coltonmack/4180-Room-Security-System/blob/master/images/Raspberry_Pi.png)
+
+### Raspberry Pi Camera Module V2
+
+![Camera](https://github.com/coltonmack/4180-Room-Security-System/blob/master/images/Camera.png)
+
+### Mbed LPC1768
+
+![Mbed](https://github.com/coltonmack/4180-Room-Security-System/blob/master/images/Mbed.png)
+
+### SPW2430 MEMS Microphone
+
+![Mic](https://github.com/coltonmack/4180-Room-Security-System/blob/master/images/Microphone.png)
+
+### HRC-SR04 Ultrasonic Distance Sensor
+
+![Ultrasonic](https://github.com/coltonmack/4180-Room-Security-System/blob/master/images/Ultrasonic.png)
+
+### Sparkfun PCB or Breadboard Mount Speaker 8ohm .1W
+
+![Speaker](https://github.com/coltonmack/4180-Room-Security-System/blob/master/images/Speaker.png)
+
+### Class D High-Efficiency Audio Amp
+
+![Amp](https://github.com/coltonmack/4180-Room-Security-System/blob/master/images/Amp.png)
 
 ## Software Description:
 
@@ -164,7 +188,7 @@ void sonarEcho(int gpio, int level, uint32_t tick)
 To make this work with the webpage, we created another php file that would be called with a different AJAX request that we included in our polling subroutine. So, every 2 seconds, a request would be made to that AJAX file, the shell command would run our C code, and the output would be returned to the javascript where the DOM was updated accordingly. 
 
 ### Speaker:
-After the ultrasonic sensor came the speaker. The speaker takes in a PWM signal, with the frequency determining its pitch and the duty cycle determining its loudness. Using one of the PWM pins on the Pi and the pigpio library, we were able to create another C program that set the PWM frequency and duty cycle accordingly and sounded the speaker (alarm) when called. 
+After the ultrasonic sensor came the speaker. The speaker (powered by the Class D Audio Amp) takes in a PWM signal, with the frequency determining its pitch and the duty cycle determining its loudness. Using one of the PWM pins on the Pi and the pigpio library, we were able to create another C program that set the PWM frequency and duty cycle accordingly and sounded the speaker (alarm) when called. 
 ```
 #include <stdio.h>
 #include <stdlib.h>
