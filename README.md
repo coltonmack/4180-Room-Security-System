@@ -212,7 +212,7 @@ int main(int argc, char *argv[])
 Just as before, we compiled the C code and placed in our project. We then added another PHP file to be called via an AJAX request that would run the program with a shell call. 
 
 ### Microphone:
-Lastly, we added the microphone. This microphone was differnt from our other I/O devices, as we couldn't hook it up directly to the Pi (Raspberry Pi does not natively support analog input). Seeing as we didn't have any ADC chips on hand, we needed to use the Mbed to act as an "ADC." In reality, the Mbed ran code to read input from the microphone, and when it detected sound, drive an output pin to the Raspberry Pi high. 
+Lastly, we added the microphone. This microphone was differnt from our other I/O devices, as we couldn't hook it up directly to the Pi (Raspberry Pi does not natively support analog input). Seeing as we didn't have any ADC chips on hand, we needed to use the Mbed to act as an "ADC." In reality, the Mbed ran code to read input from the microphone, and when it detected sound, drove an output pin to the Raspberry Pi high. 
 ```
 #include "mbed.h"
 //Adafruit MEMs SPW2430 microphone demo
