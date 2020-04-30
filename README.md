@@ -61,14 +61,14 @@ https://drive.google.com/file/d/1GwoASAbS00HHuEyZ_hoaXI5bl1ZWzVZg/view?usp=shari
 ## Software Description:
 
 ### Webpage:
-We started this project with the Raspberry Pi as we had already had the camera module and knew we could go from there. We also knew that we could make use of Linux on the Pi to host an Apache Web Server where our project would be accessible from other devices on the LAN (and even globally in the future). We started by installing Apache and setting up the front end for our application. This was done using standard html, css, and javascript. We added some HTML DOM placeholders that would interact with the different I/O devices we would eventually connect.
+We started this project with the Raspberry Pi as we had already had the camera module. We also knew that we could make use of Linux on the Pi to host an Apache Web Server where our project would be easily accessible from other devices on the LAN (and globally in the future). We started by installing Apache and setting up the front end for our application. This was done using standard html, css, and javascript. We added some HTML DOM placeholders that would interact with the different I/O devices we would eventually connect.
 
 ### Camera Module:
 After getting our webpage up, it was time to get the different I/O devices interacting with the PI. We started with the camera module. This one was pretty straightforward, as all that was needed was the raspistill command with the right arguments and the camera module attatched, and the Pi was successfully taking photos. 
 ```
 raspistill -n -w 640 -h 480 -t 1000 -o /var/www/html/img/image0.jpg
 ```
-The complicated part came when it was time to actually interact with the raspistill command from the webpage. This meant clicking a button on the webpage to take a photo and then updating the webpage to display this photo. After some research, I decided the way to do this would be with AJAX requests to different PHP files. AJAX allows for the webpage to asynchronously make requests and update the DOM without having to refresh the entire webpage. This is what our AJAX request to take a photo looked like.
+The complicated part came when it was time to actually interact with the raspistill command from the webpage. This meant clicking a button on the webpage to take a photo on the Pi and then updating the webpage to display this photo. After some research, we decided the way to do this would be with AJAX requests to different PHP files. AJAX allows for the webpage to asynchronously make requests and update the DOM without having to refresh the entire webpage. This is what our AJAX request to take a photo looks like.
 ```
 function updateWebcam(){
 	var xmlhttp=new XMLHttpRequest();
@@ -104,10 +104,10 @@ $img_name = './img/image'.$img_number.'.jpg';
 file_put_contents('./ajax_info.txt', $img_name);
 ?>
 ```
-I was the able to make another function the polled every so often (we decided on 2 seconds). This function would check a text file, and if it had been updated, would load the new image on the webpage. Great! We are able to control the camera from our webpage.
+We were able to make another function that polled every so often (we decided on 2 seconds). This function would make an AJAX request to load one of the text files from above, and if it had been updated, display the new image on the webpage. Great! We are able to control the camera from our webpage.
 
 ### Ultrasonic Sensor:
-The next I/O device we tackled was the ultrasonic sensor. This ultrasonic sensor uses pulses to determine how far away an object is in front of it. To use the ultrasonic on the Pi, we needed to write (and find some help online) code that would properly control these pulses to get accurate reads. Our code to control the ultrasonic sensor was written in C, and it made use of the pigpio C library, with the functions gpioSetAlertFunc and gpioSetTimerFunc. After enough trial and error, we were able to get accurate outputs and use these to determine if an object came into range of the sensor. 
+The next I/O device we tackled was the ultrasonic sensor. This ultrasonic sensor uses pulses to determine how far away an object is in front of it. To use the ultrasonic on the Pi, we needed to write (using some help from online) code that would properly control these pulses to get accurate reads. Our code to control the ultrasonic sensor was written in C, and it made use of the pigpio C library functions including gpioWrite, gpioSetAlertFunc, and gpioSetTimerFunc. After enough trial and error, we were able to get accurate outputs from the sensor, and we could use these to determine if an object came into its range. 
 ```
 #include <stdio.h>
 #include <stdlib.h>
@@ -185,10 +185,10 @@ void sonarEcho(int gpio, int level, uint32_t tick)
    }
 }
 ```
-To make this work with the webpage, we created another php file that would be called with a different AJAX request that we included in our polling subroutine. So, every 2 seconds, a request would be made to that AJAX file, the shell command would run our C code, and the output would be returned to the javascript where the DOM was updated accordingly. 
+To make this work with the webpage, we created another php file that would be called with a different AJAX request. This function was also included in our polling subroutine. So, every 2 seconds, a request would be made to that AJAX file, the shell command would run our C code, and the output would be returned to the javascript where the DOM was updated accordingly. 
 
 ### Speaker:
-After the ultrasonic sensor came the speaker. The speaker (powered by the Class D Audio Amp) takes in a PWM signal, with the frequency determining its pitch and the duty cycle determining its loudness. Using one of the PWM pins on the Pi and the pigpio library, we were able to create another C program that set the PWM frequency and duty cycle accordingly and sounded the speaker (alarm) when called. 
+After the ultrasonic sensor came the speaker. The speaker (powered by the Class D Audio Amp) takes in a PWM signal, with the frequency setting its pitch and the duty cycle determining its loudness. Using one of the PWM pins on the Pi and the pigpio C library functions gpioSetPWMfreqeuncy and gpioPWM, we were able to create another C program that set the PWM frequency and duty cycle accordingly, souding the speaker (alarm) when called. 
 ```
 #include <stdio.h>
 #include <stdlib.h>
@@ -212,7 +212,7 @@ int main(int argc, char *argv[])
 Just as before, we compiled the C code and placed in our project. We then added another PHP file to be called via an AJAX request that would run the program with a shell call. 
 
 ### Microphone:
-Lastly, we added the microphone. However, since the Raspberry Pi does not do native analog input, we needed to use the Mbed to act as an ADC (we didn't have any ADC chips on hand). So, we used the Mbed to read from the speaker, and if noise was detected, would drive an output pin high. 
+Lastly, we added the microphone. This microphone was differnt from our other I/O devices, as we couldn't hook it up directly to the Pi (Raspberry Pi does not natively support analog input). Seeing as we didn't have any ADC chips on hand, we needed to use the Mbed to act as an "ADC." In reality, the Mbed ran code to read input from the microphone, and when it detected sound, drive an output pin to the Raspberry Pi high. 
 ```
 #include "mbed.h"
 //Adafruit MEMs SPW2430 microphone demo
@@ -260,7 +260,7 @@ int main()
     }
 }
 ```
-The Raspberry Pi would then read from this pin (using gpioRead from the pigpio library), and if the pin was high, the Pi would know that noise was detected. 
+The Raspberry Pi would then read from this pin (using gpioRead from the pigpio library), and if it was high, would know noise was detected and update the DOM accordingly. 
 ```
 #include <stdio.h>
 #include <stdlib.h>
@@ -294,7 +294,7 @@ int main(int argc, char *argv[])
 	return 0;
 }
 ```
-After adding a pulldown resistor, we were able to make this work, and our code could now detect sound. Just as before, this compiled C program was added to our server and called from a PHP file via an AJAX request.
+After adding a pulldown resistor, we were able to make this work, and our code could now detect sound. Just as before, this compiled C program was added to our server and called from a PHP file via an AJAX request. This subroutine was also added to our polling function.
 
 ### Putting it together:
 
@@ -321,4 +321,4 @@ After adding this functionality, the tasks completed significantly faster making
 
 ## Conclusion:
 
-Overall we are satisfied with the outcome of our project. We were able to do all the I/O we wanted while keeping the webpage pretty responsive. Some things we would have liked to do include using ngrok or some other software to make our server accessible on the web and adding login functionality. The next generational of room security is right around the corner. 
+Overall we are satisfied with the outcome of our project. We were able to do all the I/O we wanted while keeping the webpage pretty responsive. Some things we would have liked to do include using ngrok or some other software to make our server accessible on the web and adding secure login functionality. The next generational of room security is right around the corner. 
