@@ -16,7 +16,7 @@ Our group was intrigued by the emerging technologies that have developed in rega
 
 ## Powerpoint Presentation:
 
-[![Powerpoint](https://github.com/coltonmack/4180-Room-Security-System/blob/master/images/Presentation.png)](https://drive.google.com/file/d/1GwoASAbS00HHuEyZ_hoaXI5bl1ZWzVZg/view?usp=sharing)
+[![Powerpoint](https://github.com/coltonmack/4180-Room-Security-System/blob/master/images/Presentation.png)](https://drive.google.com/file/d/1PKbyUkijrtj7KbJfEo9iLL-Ew3n2jb8j/view?fbclid=IwAR0kjawb1E4BlpZjiKy2dBnQndjmz35e45wym4jfjU1FKdgFd8ano6Gxn88)
 
 ## Hardware Description:
 
