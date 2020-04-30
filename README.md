@@ -300,7 +300,10 @@ After adding a pulldown resistor, we were able to make this work, and our code c
 
 The last portion was tying all these parts together. The main problem was that we were checking the speaker and ultrasonic sesnor every loop (2 seconds), and these requests were coming back blank (they weren't finishing in time). To circumvent this, we made use of the Promises API. Promises allow us to better manage asynchronous operations (in this case our AJAX requests), and by chaining the ultrasonic and microphone calls via promises we were able to speed up their execution. 
 ```
-checkMicrophone()
+function refresh(timeoutPeriod){
+	checkWebcam();
+	count = 0;
+	checkMicrophone()
 	.then(function (result) {
 		console.log(result);
 		if (result == "Sound detected")
@@ -316,6 +319,8 @@ checkMicrophone()
 			}
 		});
 	});
+	setTimeout("refresh(2000);",timeoutPeriod);
+}
 ```
 After adding this functionality, the tasks completed significantly faster making the webpage much more responsive. Lastly, we added some fun features, including sounding the alarm and taking a photo whenever noise or motion was detected. Our home security system is functional!
 
