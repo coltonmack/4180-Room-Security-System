@@ -61,7 +61,7 @@ Our group was intrigued by the emerging technologies that have developed in rega
 ## Software Description:
 
 ### Webpage:
-We started this project with the Raspberry Pi as we had already had the camera module. We also knew that we could make use of Linux on the Pi to host an Apache Web Server where our project would be easily accessible from other devices on the LAN (and globally in the future). We started by installing Apache and setting up the front end for our application. This was done using standard html, css, and javascript. We added some HTML DOM placeholders that would interact with the different I/O devices we would eventually connect.
+We started this project with the Raspberry Pi as we had already had the camera module. We also knew that we could make use of Linux on the Pi to host an Apache Web Server where our project would be easily accessible from other devices on the LAN (and globally in the future). We started by installing Apache and setting up the front end for our application. This was done using standard HTML, CSS, and Javascript. We added some HTML DOM placeholders that would interact with the different I/O devices we would eventually connect.
 
 ### Camera Module:
 After getting our webpage up, it was time to get the different I/O devices interacting with the PI. We started with the camera module. This one was pretty straightforward, as all that was needed was the raspistill command with the right arguments and the camera module attatched, and the Pi was successfully taking photos. 
